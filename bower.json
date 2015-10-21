@@ -1,0 +1,28 @@
+{
+  "name": "BookLookup",
+  "version": "1.0.0",
+  "authors": [
+    "Piero Recchia <piero.recchia@gmail.com>"
+  ],
+  "description": "App for search books in apis",
+  "main": "app.php",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "Books",
+    "Apis"
+  ],
+  "license": "MIT",
+  "homepage": "booklooup.linio.com",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.5"
+  }
+}
