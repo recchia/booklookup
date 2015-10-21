@@ -1,0 +1,27 @@
+{
+  "name": "booklookup",
+  "version": "1.0.0",
+  "description": "App for search book in apis",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LinioIT/books-lookup.git"
+  },
+  "keywords": [
+    "Book",
+    "Apis"
+  ],
+  "author": "Piero Recchia",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LinioIT/books-lookup/issues"
+  },
+  "homepage": "https://github.com/LinioIT/books-lookup#readme",
+  "devDependencies": {
+    "gulp-concat": "^2.6.0",
+    "gulp-uglify": "^1.4.2"
+  }
+}
