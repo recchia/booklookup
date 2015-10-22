@@ -1,1 +1,13 @@
 /** Custom CSS **/
+.btn-orange {
+    color: #fff;
+    background-color: #ff5500;
+    border-color: #e64d00;
+}
+.btn-orange:hover,
+.btn-orange:focus,
+.btn-orange.focus {
+    color: #fff;
+    background-color: #FD4101;
+    border-color: #FD4101;
+}
