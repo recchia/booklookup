@@ -23,7 +23,10 @@ class SearchType extends AbstractType
                     'message' => 'El campo ISBN es obligatorio'
                 ])
             ])
-            ->add('api', 'choice')
+            ->add('api', 'entity', [
+                'class' => 'AppBundle\Entity\ApiVendor',
+                'property' => 'name'
+            ])
             ->add('search', 'submit', ['label' => 'Buscar'])
         ;
     }
