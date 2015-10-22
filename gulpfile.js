@@ -5,7 +5,7 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     uglify = require('gulp-uglify');
 
-gulp.task('default', ['css', 'js']);
+gulp.task('default', ['css', 'js', 'fonts']);
 
 gulp.task('css', function () {
     gulp.src([
@@ -25,4 +25,9 @@ gulp.task('js', function () {
         .pipe(concat('app.js'))
         .pipe(uglify())
         .pipe(gulp.dest('web/assets/js'))
+});
+
+gulp.task('fonts', function () {
+    gulp.src('bower_components/bootstrap/dist/fonts/*.{eot,svg,ttf,woff,woff2}')
+      .pipe(gulp.dest('web/assets/fonts'))
 });
