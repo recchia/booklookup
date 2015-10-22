@@ -30,7 +30,7 @@ class DefaultController extends Controller
     public function searchAction()
     {
         try {
-            $api = new Adapter(['key' => '-fn6FtEs12n5CsbFXQQgDU']);
+            $api = new Adapter(['key' => 'AIzaSyDfR5cB9PNeD-fn6FtEs12n5CsbFXQQgDU']);
             dump($api->findOne('3822809128'));
             die();
         } catch (BookNotFoundException $e) {

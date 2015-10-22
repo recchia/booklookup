@@ -36,3 +36,4 @@ karma-coverage.xml
 .php_cs.cache
 /web/web.config
 .bundle
+.rules
