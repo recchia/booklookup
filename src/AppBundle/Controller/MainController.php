@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Form\Type\SearchType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,7 +14,9 @@ class MainController extends Controller
      */
     public function indexAction()
     {
-        return $this->render(':Main:index.html.twig');
+        $form = $this->createForm(new SearchType());
+
+        return $this->render(':Main:index.html.twig', ['form' => $form->createView()]);
     }
 
     /**
