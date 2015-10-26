@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Form\Type\SearchType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class MainController extends Controller
@@ -20,15 +21,30 @@ class MainController extends Controller
     }
 
     /**
+     * @param Request $request
+     *
+     * @return array
+     *
      * @Route("/search", name="single_search")
      */
     public function searchAction(Request $request)
     {
-        if ($request->isXmlHttpRequest()) {
-            //json response
+        $form = $this->createForm(new SearchType());
+        $form->handleRequest($request);
+
+        if($form->isValid()) {
+            $data = $form->getData();
+            $em = $this->getDoctrine();
+            $vendor = $em->getRepository("AppBundle:ApiVendor")->find($data['api']);
+            $result = $this->get("api_search")->search($vendor, ['isbn' => $data['isbn']]);
+
+            if ($request->isXmlHttpRequest()) {
+                return new JsonResponse($result);
+            } else {
+                return $this->render(":Main:search.html.twig", ['result' => $result]);
+            }
         } else {
-            //search
+            return $this->redirect($this->generateUrl('home'), ['form' => $form->createView()]);
         }
-        return [];
     }
 }

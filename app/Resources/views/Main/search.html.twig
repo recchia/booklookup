@@ -1,7 +1,24 @@
-{% extends "::base.html.twig" %}
+{% extends "::layout.html.twig" %}
 
-{% block title %}AppBundle:Main:search{% endblock %}
+{% block title %}Resultado{% endblock %}
 
-{% block body %}
-<h1>Welcome to the Main:search page</h1>
+{% block content %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Información de Libro(s)</h3>
+        </div>
+        <div class="panel-body">
+            {% for item in result %}
+                <p>Título: {{ item.title }}</p>
+                <p>Autor: {{ item.author }}</p>
+                <p>Paginas: {{ item.pages }}</p>
+                <p>Dimensiones: {{ item.dimensions }}</p>
+                <p>Categoria: {{ item.category }}</p>
+                <p>Descripcion: {{ item.description }}</p>
+                <p>ISBN 10: {{ item.isbn10 }}</p>
+                <p>ISBN 13: {{ item.isbn13 }}</p>
+                <p>Imagen: {{ item.image }}</p>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}
