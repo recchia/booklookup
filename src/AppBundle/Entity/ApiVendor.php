@@ -31,14 +31,14 @@ class ApiVendor
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=60, unique=true)
+     * @ORM\Column(type="string", length=60, unique=true, name="api_name")
      */
     protected $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=128)
+     * @ORM\Column(type="string", length=128, name="api_key")
      */
     protected $key;
 
