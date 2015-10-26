@@ -1,0 +1,6 @@
+easy_admin:
+    site_name: 'Linio Books'
+    entities:
+        ApiVendor:
+            label: 'Api Vendor'
+            class: AppBundle\Entity\ApiVendor
