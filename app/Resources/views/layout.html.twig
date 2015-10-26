@@ -30,6 +30,9 @@
                                 <li><a href="#">Ayuda</a></li>
                             </ul>
                         </li>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li><a href="{{ path('admin') }}">Admin </a></li>
+                        {% endif %}
                     </ul>
                     <form class="navbar-form navbar-left" role="search" action="{{ path('single_search') }}">
                         <div class="form-group">
