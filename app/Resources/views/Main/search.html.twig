@@ -3,22 +3,21 @@
 {% block title %}Resultado{% endblock %}
 
 {% block content %}
+    {% for item in result %}
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">Información de Libro(s)</h3>
+            <h3 class="panel-title">Título: {{ item.title }}</h3>
         </div>
         <div class="panel-body">
-            {% for item in result %}
-                <p>Título: {{ item.title }}</p>
-                <p>Autor: {{ item.author }}</p>
-                <p>Paginas: {{ item.pages }}</p>
+                <p>Autor(es): {{ item.author }}</p>
+                <p>P&aacute;ginas: {{ item.pages }}</p>
                 <p>Dimensiones: {{ item.dimensions }}</p>
-                <p>Categoria: {{ item.category }}</p>
-                <p>Descripcion: {{ item.description }}</p>
+                <p>Categor&iacute;a: {{ item.category }}</p>
+                <p>Descripci&oacute;n: {{ item.description }}</p>
                 <p>ISBN 10: {{ item.isbn10 }}</p>
                 <p>ISBN 13: {{ item.isbn13 }}</p>
                 <p>Imagen: {{ item.image }}</p>
-            {% endfor %}
         </div>
     </div>
+    {% endfor %}
 {% endblock %}
