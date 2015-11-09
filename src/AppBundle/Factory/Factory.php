@@ -8,6 +8,12 @@
 
 namespace AppBundle\Factory;
 
-class Factory
+abstract class Factory
 {
+    protected abstract function getObject();
+
+    public function startFactory()
+    {
+        return $this->getObject();
+    }
 }
