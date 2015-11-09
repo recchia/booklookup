@@ -34,9 +34,7 @@ class MainController extends Controller
 
         if($form->isValid()) {
             $data = $form->getData();
-            $em = $this->getDoctrine();
-            $vendor = $em->getRepository("AppBundle:ApiVendor")->find($data['api']);
-            $result = $this->get("api_search")->search($vendor, ['isbn' => $data['isbn']]);
+            $result = $this->get("api.search")->search($data);
 
             if ($request->isXmlHttpRequest()) {
                 return new JsonResponse($result);

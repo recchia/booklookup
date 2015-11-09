@@ -8,14 +8,11 @@
 
 namespace AppBundle\Service;
 
-use AppBundle\Entity\ApiVendor;
-
 class SearchService
 {
-    public function search(ApiVendor $vendor, array $books)
+    public function search(array $data)
     {
-        if(count($books) == 1) {
-            $className = "AppBundle\\Adapter\\" . $vendor->getAdapter();
+        if(count($data['isbn']) == 1) {
             $adapter = new $className(['key' => $vendor->getKey()]);
 
             return $adapter->findOne($books['isbn']);
