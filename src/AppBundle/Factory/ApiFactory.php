@@ -8,6 +8,10 @@
 
 namespace AppBundle\Factory;
 
-class ApiFactory
+class ApiFactory extends Factory
 {
+    protected function getObject()
+    {
+        // TODO: Implement getObject() method.
+    }
 }
