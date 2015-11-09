@@ -10,10 +10,10 @@ namespace AppBundle\Factory;
 
 abstract class Factory
 {
-    protected abstract function getObject();
+    protected abstract function getObject($id);
 
-    public function startFactory()
+    public function startFactory($id = null)
     {
-        return $this->getObject();
+        return $this->getObject($id);
     }
 }

@@ -12,4 +12,8 @@ use Doctrine\ORM\EntityRepository;
 
 class ApiVendorRepository extends EntityRepository
 {
+    public function findByCode($code)
+    {
+        return $this->findOneBy(['code' => $code]);
+    }
 }
