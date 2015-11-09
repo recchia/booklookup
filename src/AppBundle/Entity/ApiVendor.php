@@ -31,6 +31,13 @@ class ApiVendor
     /**
      * @var string
      *
+     * @ORM\Column(type="string", length=8, unique=true, name="api_code")
+     */
+    protected $code;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(type="string", length=60, unique=true, name="api_name")
      */
     protected $name;
@@ -74,6 +81,14 @@ class ApiVendor
     }
 
     /**
+     * @param string $code
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+    }
+
+    /**
      * @return int
      */
     public function getId()
@@ -103,6 +118,14 @@ class ApiVendor
     public function getAdapter()
     {
         return $this->adapter;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
     }
 
 }
