@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @package AppBundle\Entity
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\ApiVendorRepository")
  */
 class ApiVendor
 {
