@@ -86,8 +86,6 @@ class ProcessFileCommand extends ContainerAwareCommand
                         } catch (ApiException $e) {
                             $logger = $this->container->get("logger");
                             $logger->error($e->getMessage());
-                            $output->writeln('<error>Process Aborted. Check Log for Info.</error>');
-                            die();
                         }
                         $bar->advance();
                     }
