@@ -8,14 +8,33 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Factory\Factory;
+
 class SearchService
 {
+    protected $adapterFactory;
+
+    public function __construct(Factory $factory)
+    {
+        $this->adapterFactory = $factory;
+    }
+
     public function search(array $data)
     {
-        if(count($data['isbn']) == 1) {
-            $adapter = new $className(['key' => $vendor->getKey()]);
+        $isbn = explode(",", $data["isbn"]);
 
-            return $adapter->findOne($books['isbn']);
+        $adapter = $this->adapterFactory->startFactory($data['api']);
+
+        $books = [];
+
+        if(count($isbn) == 1) {
+            $books[] = $adapter->findOne($isbn[0]);
+        } else {
+            foreach ($isbn as $value) {
+                $books[] = $adapter->findOne($value);
+            }
         }
+
+        return $books;
     }
 }

@@ -9,3 +9,7 @@ services:
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
     api.search:
         class: AppBundle\Service\SearchService
+        arguments: ["@api.adapter.factory"]
+
+    api.adapter.factory:
+        class: AppBundle\Factory\AdapterFactory

@@ -8,12 +8,14 @@
 
 namespace AppBundle\Factory;
 
+use AppBundle\Entity\ApiVendor;
+
 abstract class Factory
 {
-    protected abstract function getObject($id);
+    protected abstract function getObject(ApiVendor $vendor);
 
-    public function startFactory($id = null)
+    public function startFactory($vendor)
     {
-        return $this->getObject($id);
+        return $this->getObject($vendor);
     }
 }

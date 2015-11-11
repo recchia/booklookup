@@ -34,12 +34,13 @@ class MainController extends Controller
 
         if($form->isValid()) {
             $data = $form->getData();
-            $result = $this->get("api.search")->search($data);
+
+            $books = $this->get("api.search")->search($data);
 
             if ($request->isXmlHttpRequest()) {
-                return new JsonResponse($result);
+                return new JsonResponse($books);
             } else {
-                return $this->render(":Main:search.html.twig", ['result' => $result]);
+                return $this->render(":Main:search.html.twig", ['result' => $books]);
             }
         } else {
             return $this->redirect($this->generateUrl('home'), ['form' => $form->createView()]);

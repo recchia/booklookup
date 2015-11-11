@@ -44,17 +44,12 @@ class Adapter implements AdapterInterface
     public function findOne($isbn)
     {
         $query = 'isbn:' . $isbn;
-        $data = [];
         $result = $this->api->volumes->listVolumes($query, ['langRestrict' => 'es']);
         if($result->getTotalItems() == 0) {
             throw new BookNotFoundException(printf("ISBN %s NOT FOUND", $isbn));
         } else {
-            foreach ($result->getItems() as $item) {
-                $data[] = $this->getBookData($item->getVolumeInfo());
-            }
+            return $this->getBookData($result->getItems()[0]->getVolumeInfo());
         }
-
-        return $data;
     }
 
     /**
