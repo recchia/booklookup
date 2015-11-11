@@ -62,6 +62,7 @@ class ProcessFileCommand extends ContainerAwareCommand
                     $phpExcel->getActiveSheet()->setCellValue('I1', 'Imagen');
                     $vendor = $this->container->get('doctrine.orm.entity_manager')->getRepository("AppBundle:ApiVendor")->findByCode($apiCode);
                     $adapter = $this->container->get("api.adapter.factory")->startFactory($vendor);
+                    $logger = $this->container->get("logger");
                     $bar = new ProgressBar($output, $highestRow);
                     $bar->setFormat("<comment> %message%\n %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% %memory:6s%</comment>");
                     $bar->setMessage('<comment>Processing file...</comment>');
@@ -81,10 +82,8 @@ class ProcessFileCommand extends ContainerAwareCommand
                             $phpExcel->getActiveSheet()->setCellValue('I' . $i, $book['image']);
                             $i++;
                         } catch (BookNotFoundException $e) {
-                            $logger = $this->container->get("logger");
                             $logger->info($e->getMessage());
                         } catch (ApiException $e) {
-                            $logger = $this->container->get("logger");
                             $logger->error($e->getMessage());
                         }
                         $bar->advance();
