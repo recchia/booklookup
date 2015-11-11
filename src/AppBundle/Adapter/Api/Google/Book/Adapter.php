@@ -46,7 +46,7 @@ class Adapter implements AdapterInterface
         $query = 'isbn:' . $isbn;
         $result = $this->api->volumes->listVolumes($query, ['langRestrict' => 'es']);
         if($result->getTotalItems() == 0) {
-            throw new BookNotFoundException(printf("ISBN %s NOT FOUND", $isbn));
+            throw new BookNotFoundException("ISBN " . $isbn . " NOT FOUND");
         } else {
             return $this->getBookData($result->getItems()[0]->getVolumeInfo());
         }

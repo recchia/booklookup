@@ -42,48 +42,34 @@ class ProcessFileCommand extends ContainerAwareCommand
                     $excel = $this->container->get("phpexcel")->createPHPExcelObject($source);
                     $sheet = $excel->getActiveSheet();
                     $highestRow = $sheet->getHighestRow();
-                    $isbnArray = [];
-                    $bar = new ProgressBar($output, $highestRow);
-                    $bar->setFormat("<comment> %message%\n %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% %memory:6s%</comment>");
-                    $bar->setMessage('<comment>Processing file...</comment>');
-                    $bar->start();
-                    for ($row = 1; $row <= $highestRow; ++$row) {
-                        $isbnArray[] = $sheet->getCellByColumnAndRow(0, $row)->getValue();
-                        $bar->advance();
-                    }
-                    $bar->setMessage('<comment>ISBN source loaded</comment>');
-                    $bar->clear();
-                    $bar->display();
-                    $bar->finish();
-                    $output->writeln('');
                     $phpExcel = $this->container->get("phpexcel")->createPHPExcelObject();
-                    $phpExcel->getProperties()->setCreator('Piero Recchia')
-                        ->setLastModifiedBy('Piero Recchia')
-                        ->setTitle('Office 2007 XLSX Test Document')
-                        ->setSubject('Office 2007 XLSX Test Document')
-                        ->setDescription('Test document for Office 2007 XLSX, generated using PHP classes.')
-                        ->setKeywords('office 2007 openxml php')
-                        ->setCategory('Test result file');
+                    $phpExcel->getProperties()->setCreator('Linio BookLookup')
+                        ->setLastModifiedBy('Linio BookLookup')
+                        ->setTitle('Archivo de Libros')
+                        ->setSubject('Listado de Libros')
+                        ->setDescription('Archivo generado automáticamente por Linio BookLookup')
+                        ->setKeywords('linio libros excel')
+                        ->setCategory('Libros');
                     $phpExcel->setActiveSheetIndex(0);
-                    $phpExcel->getActiveSheet()->setCellValue('A1', 'Titulo');
+                    $phpExcel->getActiveSheet()->setCellValue('A1', 'Título');
                     $phpExcel->getActiveSheet()->setCellValue('B1', 'Autor');
-                    $phpExcel->getActiveSheet()->setCellValue('C1', 'Numero de Paginas');
+                    $phpExcel->getActiveSheet()->setCellValue('C1', 'Número de Páginas');
                     $phpExcel->getActiveSheet()->setCellValue('D1', 'Dimensiones');
-                    $phpExcel->getActiveSheet()->setCellValue('E1', 'Categoria');
-                    $phpExcel->getActiveSheet()->setCellValue('F1', 'Descripcion');
+                    $phpExcel->getActiveSheet()->setCellValue('E1', 'Categoría');
+                    $phpExcel->getActiveSheet()->setCellValue('F1', 'Descripción');
                     $phpExcel->getActiveSheet()->setCellValue('G1', 'ISBN_10');
                     $phpExcel->getActiveSheet()->setCellValue('H1', 'ISBN_13');
                     $phpExcel->getActiveSheet()->setCellValue('I1', 'Imagen');
                     $vendor = $this->container->get('doctrine.orm.entity_manager')->getRepository("AppBundle:ApiVendor")->findByCode($apiCode);
-                    $progress = new ProgressBar($output, count($isbnArray));
-                    $progress->setFormat("<comment> %message%\n %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% %memory:6s%</comment>");
-                    $progress->setMessage('<comment>Searching Books in ' . $vendor->getName() . '...</comment>');
                     $adapter = $this->container->get("api.adapter.factory")->startFactory($vendor);
+                    $bar = new ProgressBar($output, $highestRow);
+                    $bar->setFormat("<comment> %message%\n %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% %memory:6s%</comment>");
+                    $bar->setMessage('<comment>Processing file...</comment>');
+                    $bar->start();
                     $i = 2;
-                    $progress->start();
-                    foreach ($isbnArray as $isbn) {
+                    for ($row = 1; $row <= $highestRow; ++$row) {
                         try {
-                            $book = $adapter->findOne($isbn);
+                            $book = $adapter->findOne($sheet->getCellByColumnAndRow(0, $row)->getValue());
                             $phpExcel->getActiveSheet()->setCellValue('A' . $i, $book['title']);
                             $phpExcel->getActiveSheet()->setCellValue('B' . $i, $book['author']);
                             $phpExcel->getActiveSheet()->setCellValue('C' . $i, $book['pages']);
@@ -95,21 +81,24 @@ class ProcessFileCommand extends ContainerAwareCommand
                             $phpExcel->getActiveSheet()->setCellValue('I' . $i, $book['image']);
                             $i++;
                         } catch (BookNotFoundException $e) {
-                            $output->writeln('<error>' . $e->getMessage() . '</error>');
+                            $logger = $this->container->get("logger");
+                            $logger->info($e->getMessage());
                         } catch (ApiException $e) {
-                            $output->writeln('<error>' . $e->getMessage() . '</error>');
+                            $logger = $this->container->get("logger");
+                            $logger->error($e->getMessage());
+                            $output->writeln('<error>Process Aborted. Check Log for Info.</error>');
+                            die();
                         }
-                        $progress->advance();
+                        $bar->advance();
                     }
-                    $progress->setMessage('<comment>Search ready</comment>');
-                    $progress->clear();
-                    $progress->display();
-                    $progress->finish();
-                    $output->writeln('');
-                    $output->writeln("<info>Saving data in $target</info>");
+                    $bar->setMessage('<comment>Process Done.</comment>');
+                    $bar->clear();
+                    $bar->display();
+                    $bar->finish();
                     $phpExcel->setActiveSheetIndex(0);
                     $writer = $this->container->get('phpexcel')->createWriter($phpExcel, 'Excel2007');
                     $writer->save($target);
+                    $output->writeln("");
                     $output->writeln("<info>Data saved in $target</info>");
                     break;
                 default:
