@@ -35,7 +35,7 @@ class MainController extends Controller
         if($form->isValid()) {
             $data = $form->getData();
 
-            $books = $this->get("api.search")->search($data);
+            $books = $this->get("api.search")->search($data['api'], $data['isbn']);
 
             if ($request->isXmlHttpRequest()) {
                 return new JsonResponse($books);
