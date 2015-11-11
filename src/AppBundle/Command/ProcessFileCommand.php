@@ -95,9 +95,9 @@ class ProcessFileCommand extends ContainerAwareCommand
                             $phpExcel->getActiveSheet()->setCellValue('I' . $i, $book['image']);
                             $i++;
                         } catch (BookNotFoundException $e) {
-                            //Add log
+                            $output->writeln('<error>' . $e->getMessage() . '</error>');
                         } catch (ApiException $e) {
-                            //Add Log
+                            $output->writeln('<error>' . $e->getMessage() . '</error>');
                         }
                         $progress->advance();
                     }
