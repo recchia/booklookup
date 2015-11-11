@@ -13,6 +13,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\ProgressBar;
+use AppBundle\Exception\BookNotFoundException;
 
 class ProcessFileCommand extends ContainerAwareCommand
 {
@@ -31,12 +32,12 @@ class ProcessFileCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $apiName = $input->getArgument('apiCode');
+        $apiCode = $input->getArgument('apiCode');
         $source = $input->getArgument('source');
         $target = $input->getArgument('target');
         if (file_exists($source)) {
-            $this->container = $this->getApplication()->getKernel()->getContainer();
-            switch ($apiName) {
+            $this->container = $this->getContainer();
+            switch ($apiCode) {
                 case 'google':
                     $excel = $this->container->get("phpexcel")->createPHPExcelObject($source);
                     $sheet = $excel->getActiveSheet();
@@ -44,7 +45,7 @@ class ProcessFileCommand extends ContainerAwareCommand
                     $isbnArray = [];
                     $bar = new ProgressBar($output, $highestRow);
                     $bar->setFormat("<comment> %message%\n %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% %memory:6s%</comment>");
-                    $bar->setMessage('<comment>Reading ISBN from source file...</comment>');
+                    $bar->setMessage('<comment>Processing file...</comment>');
                     $bar->start();
                     for ($row = 1; $row <= $highestRow; ++$row) {
                         $isbnArray[] = $sheet->getCellByColumnAndRow(0, $row)->getValue();
@@ -66,25 +67,32 @@ class ProcessFileCommand extends ContainerAwareCommand
                     $phpExcel->setActiveSheetIndex(0);
                     $phpExcel->getActiveSheet()->setCellValue('A1', 'Titulo');
                     $phpExcel->getActiveSheet()->setCellValue('B1', 'Autor');
-                    $phpExcel->getActiveSheet()->setCellValue('C1', 'Editorial');
-                    $phpExcel->getActiveSheet()->setCellValue('D1', 'Descripcion');
-                    $phpExcel->getActiveSheet()->setCellValue('E1', 'Numero de Paginas');
-                    $phpExcel->getActiveSheet()->setCellValue('F1', 'Imagen');
+                    $phpExcel->getActiveSheet()->setCellValue('C1', 'Numero de Paginas');
+                    $phpExcel->getActiveSheet()->setCellValue('D1', 'Dimensiones');
+                    $phpExcel->getActiveSheet()->setCellValue('E1', 'Categoria');
+                    $phpExcel->getActiveSheet()->setCellValue('F1', 'Descripcion');
+                    $phpExcel->getActiveSheet()->setCellValue('G1', 'ISBN_10');
+                    $phpExcel->getActiveSheet()->setCellValue('H1', 'ISBN_13');
+                    $phpExcel->getActiveSheet()->setCellValue('I1', 'Imagen');
+                    $vendor = $this->container->get('doctrine.orm.entity_manager')->getRepository("AppBundle:ApiVendor")->findByCode($apiCode);
                     $progress = new ProgressBar($output, count($isbnArray));
                     $progress->setFormat("<comment> %message%\n %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% %memory:6s%</comment>");
-                    $progress->setMessage('<comment>Searching Books in ' . $apiName . '...</comment>');
-                    $api = new GoogleBooksApiAdapter(['api_key' => 'AIzaSyDfR5cB9PNeD-fn6FtEs12n5CsbFXQQgDU']);
+                    $progress->setMessage('<comment>Searching Books in ' . $vendor->getName() . '...</comment>');
+                    $adapter = $this->container->get("api.adapter.factory")->startFactory($vendor);
                     $i = 2;
                     $progress->start();
                     foreach ($isbnArray as $isbn) {
                         try {
-                            $book = $api->findOne($isbn);
+                            $book = $adapter->findOne($isbn);
                             $phpExcel->getActiveSheet()->setCellValue('A' . $i, $book['title']);
-                            $phpExcel->getActiveSheet()->setCellValue('B' . $i, $book['authors']);
-                            $phpExcel->getActiveSheet()->setCellValue('C' . $i, $book['publisher']);
-                            $phpExcel->getActiveSheet()->setCellValue('D' . $i, $book['description']);
-                            $phpExcel->getActiveSheet()->setCellValue('E' . $i, $book['pageCount']);
-                            $phpExcel->getActiveSheet()->setCellValue('F' . $i, $book['imageLink']);
+                            $phpExcel->getActiveSheet()->setCellValue('B' . $i, $book['author']);
+                            $phpExcel->getActiveSheet()->setCellValue('C' . $i, $book['pages']);
+                            $phpExcel->getActiveSheet()->setCellValue('D' . $i, $book['dimensions']);
+                            $phpExcel->getActiveSheet()->setCellValue('E' . $i, $book['category']);
+                            $phpExcel->getActiveSheet()->setCellValue('F' . $i, $book['description']);
+                            $phpExcel->getActiveSheet()->setCellValue('G' . $i, $book['isbn10']);
+                            $phpExcel->getActiveSheet()->setCellValue('H' . $i, $book['isbn13']);
+                            $phpExcel->getActiveSheet()->setCellValue('I' . $i, $book['image']);
                             $i++;
                         } catch (BookNotFoundException $e) {
                             //Add log
@@ -100,7 +108,7 @@ class ProcessFileCommand extends ContainerAwareCommand
                     $output->writeln('');
                     $output->writeln("<info>Saving data in $target</info>");
                     $phpExcel->setActiveSheetIndex(0);
-                    $writer = $this->get('phpexcel')->createWriter($phpExcel, 'Excel2007');
+                    $writer = $this->container->get('phpexcel')->createWriter($phpExcel, 'Excel2007');
                     $writer->save($target);
                     $output->writeln("<info>Data saved in $target</info>");
                     break;

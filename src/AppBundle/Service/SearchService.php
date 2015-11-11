@@ -8,6 +8,7 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Entity\ApiVendor;
 use AppBundle\Factory\Factory;
 
 class SearchService
@@ -19,11 +20,11 @@ class SearchService
         $this->adapterFactory = $factory;
     }
 
-    public function search(array $data)
+    public function search(ApiVendor $vendor, $isbn)
     {
-        $isbn = explode(",", $data["isbn"]);
+        $isbn = explode(",", $isbn);
 
-        $adapter = $this->adapterFactory->startFactory($data['api']);
+        $adapter = $this->adapterFactory->startFactory($vendor);
 
         $books = [];
 
