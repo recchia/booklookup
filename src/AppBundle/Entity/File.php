@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table()
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks()
  */
 class File
 {
@@ -41,10 +42,21 @@ class File
     /**
      * @var object
      *
-     * @Assert\File(maxSize="6000000")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     */
+    private $user;
+
+    /**
+     * @var object
+     *
+     * @Assert\File(maxSize="6000000", mimeTypes={"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"})
      */
     private $file;
 
+    /**
+     * @var string
+     */
+    private $temp;
 
     /**
      * Get id
@@ -105,6 +117,53 @@ class File
     }
 
     /**
+     * Set user
+     *
+     * @param User $user
+     */
+    public function setUser(User $user)
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * Get User
+     *
+     * @return object
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set file
+     *
+     * @param UploadedFile $file
+     */
+    public function setFile(UploadedFile $file)
+    {
+        $this->file = $file;
+
+        if(isset($this->path)) {
+            $this->temp = $this->path;
+            $this->path = null;
+        } else {
+            $this->path = 'initial';
+        }
+    }
+
+    /**
+     * Get file
+     *
+     * @return object
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
      * Get absolute upload dir
      *
      * @return null|string
@@ -135,7 +194,7 @@ class File
      */
     protected function getUploadRootDir()
     {
-        return __DIR__.'/../../../../web/'.$this->getUploadDir();
+        return __DIR__.'/../../../web/'.$this->getUploadDir();
     }
 
     /**
@@ -149,23 +208,48 @@ class File
     }
 
     /**
-     * Set file
-     *
-     * @param UploadedFile $file
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
      */
-    public function setFile(UploadedFile $file)
+    public function preUpload()
     {
-        $this->file = $file;
+        if(null !== $this->getFile()) {
+            $filename = sha1(uniqid(mt_rand(), true));
+            $this->path = $filename . '.' . $this->getFile()->guessExtension();
+        }
     }
 
     /**
-     * Get file
+     * Upload file in right directory
      *
-     * @return object
+     * @ORM\PostPersist()
+     * @ORM\PostUpdate()
      */
-    public function getFile()
+    public function upload()
     {
-        return $this->file;
+        if(null === $this->file) {
+            return;
+        }
+
+        $this->getFile()->move($this->getUploadRootDir(), $this->path);
+
+        if(isset($this->temp)) {
+            unlink($this->getUploadRootDir() . '/' . $this->temp);
+            $this->temp = null;
+        }
+
+        $this->file = null;
+    }
+
+    /**
+     * @ORM\PostRemove()
+     */
+    public function removeUpload()
+    {
+        $file = $this->getAbsolutePath();
+        if($file) {
+            unlink($file);
+        }
     }
 }
 

@@ -4,7 +4,7 @@
 
 {% block content %}
     <div class="col-md-6 col-md-offset-3 vertical-center">
-        {{ form_start(form, {'attr': {'class': 'form-horizontal'}, 'action': path('single_search') }) }}
+        {{ form_start(form, {'attr': {'class': 'form-horizontal'}, 'action': path('upload_file') }) }}
         <div class="form-group">
             <label>{{ form_label(form.name, null, { 'label_attr': { 'class': 'control-label' } }) }}</label>
             {{ form_widget(form.name, { 'attr': { 'class': 'form-control' } }) }}
