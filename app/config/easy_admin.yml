@@ -4,3 +4,6 @@ easy_admin:
         ApiVendor:
             label: 'Api Vendor'
             class: AppBundle\Entity\ApiVendor
+        User:
+            label: 'Usuarios'
+            class: AppBundle\Entity\User
