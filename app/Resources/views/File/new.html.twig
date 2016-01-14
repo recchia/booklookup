@@ -1,0 +1,19 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}AppBundle:File:new{% endblock %}
+
+{% block content %}
+    <div class="col-md-6 col-md-offset-3 vertical-center">
+        {{ form_start(form, {'attr': {'class': 'form-horizontal'}, 'action': path('single_search') }) }}
+        <div class="form-group">
+            <label>{{ form_label(form.name, null, { 'label_attr': { 'class': 'control-label' } }) }}</label>
+            {{ form_widget(form.name, { 'attr': { 'class': 'form-control' } }) }}
+        </div>
+        <div class="form-group">
+            <label>{{ form_label(form.file) }}</label>
+            {{ form_widget(form.file) }}
+        </div>
+        {{ form_widget(form.upload, { 'attr': { 'class': 'btn btn-orange' } }) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

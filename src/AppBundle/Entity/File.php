@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * File
@@ -25,6 +27,7 @@ class File
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $name;
 
@@ -34,6 +37,13 @@ class File
      * @ORM\Column(name="path", type="string", length=255)
      */
     private $path;
+
+    /**
+     * @var object
+     *
+     * @Assert\File(maxSize="6000000")
+     */
+    private $file;
 
 
     /**
@@ -136,6 +146,26 @@ class File
     protected function getUploadDir()
     {
         return 'uploads/files';
+    }
+
+    /**
+     * Set file
+     *
+     * @param UploadedFile $file
+     */
+    public function setFile(UploadedFile $file)
+    {
+        $this->file = $file;
+    }
+
+    /**
+     * Get file
+     *
+     * @return object
+     */
+    public function getFile()
+    {
+        return $this->file;
     }
 }
 
