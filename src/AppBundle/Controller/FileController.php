@@ -26,7 +26,7 @@ class FileController extends Controller
     }
 
     /**
-     * @Route("/new")
+     * @Route("/new", name="new_file")
      */
     public function newAction()
     {
