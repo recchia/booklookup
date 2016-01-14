@@ -93,5 +93,49 @@ class File
     {
         return $this->path;
     }
+
+    /**
+     * Get absolute upload dir
+     *
+     * @return null|string
+     */
+    public function getAbsolutePath()
+    {
+        return null === $this->path
+            ? null
+            : $this->getUploadRootDir() . '/' . $this->path;
+    }
+
+    /**
+     * Get web path
+     *
+     * @return null|string
+     */
+    public function getWebPath()
+    {
+        return null === $this->path
+            ? null
+            : $this->getUploadDir().'/'.$this->path;
+    }
+
+    /**
+     * Get absolute root dir
+     *
+     * @return string
+     */
+    protected function getUploadRootDir()
+    {
+        return __DIR__.'/../../../../web/'.$this->getUploadDir();
+    }
+
+    /**
+     * Get upload dir name
+     *
+     * @return string
+     */
+    protected function getUploadDir()
+    {
+        return 'uploads/files';
+    }
 }
 
