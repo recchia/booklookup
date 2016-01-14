@@ -6,7 +6,6 @@ use AppBundle\Entity\File;
 use AppBundle\Form\Type\FileType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -20,13 +19,11 @@ class FileController extends Controller
 {
     /**
      * @Route("/", name="files_list")
-     * @Template()
      */
     public function indexAction()
     {
-        return array(
-                // ...
-            );    }
+        return $this->render(":File:index.html.twig");
+    }
 
     /**
      * @Route("/new")
@@ -57,6 +54,8 @@ class FileController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($file);
             $em->flush();
+
+            $this->addFlash("success", "File created!");
 
             return $this->redirectToRoute("files_list");
         }
