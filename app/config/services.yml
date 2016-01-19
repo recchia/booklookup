@@ -13,3 +13,7 @@ services:
 
     api.adapter.factory:
         class: AppBundle\Factory\AdapterFactory
+
+    bookslookup.queue:
+        class: AppBundle\Service\ProducerService
+        arguments: ["@old_sound_rabbit_mq.push_file_producer"]
