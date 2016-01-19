@@ -1,10 +1,10 @@
 old_sound_rabbit_mq:
     connections:
         default:
-            host:     %rmq_host%
-            port:     %rmq_port%
-            user:     %rmq_user%
-            password: %rmq_password%
+            host:     %rabbit_host%
+            port:     %rabbit_port%
+            user:     %rabbit_user%
+            password: %rabbit_passwordd%
             vhost:    '/'
             lazy:     false
             connection_timeout: 3
