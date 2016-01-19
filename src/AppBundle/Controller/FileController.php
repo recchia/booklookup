@@ -4,8 +4,10 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\File;
 use AppBundle\Form\Type\FileType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -22,7 +24,11 @@ class FileController extends Controller
      */
     public function indexAction()
     {
-        return $this->render(":File:index.html.twig");
+        $em = $this->getDoctrine()->getManager();
+
+        $files = $em->getRepository('AppBundle:File')->findBy(['user' => $this->getUser()->getId()]);
+
+        return $this->render(":File:index.html.twig", ['files' => $files]);
     }
 
     /**
@@ -61,6 +67,26 @@ class FileController extends Controller
         }
 
         return $this->render(":File:new.html.twig", ["form" => $form->createView()]);
+    }
+
+    /**
+     * @param File $file
+     *
+     * @Route("/push/{id}", name="push_file")
+     *
+     * @return JsonResponse
+     */
+    public function pushFileToProcess(File $file)
+    {
+        $message = [
+            'id' => $file->getId(),
+            'name' => $file->getName(),
+            'path' => $file->getWebPath()
+        ];
+
+        $this->get('bookslookup.queue')->publish(json_encode($message));
+
+        return new JsonResponse(['file' => $message]);
     }
 
 }
