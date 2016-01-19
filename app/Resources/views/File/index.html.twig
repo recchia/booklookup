@@ -3,5 +3,12 @@
 {% block title %}AppBundle:File:index{% endblock %}
 
 {% block content %}
-<h1>Welcome to the File:index page</h1>
+<h1>Listado de archivos</h1>
+    {{ dump(files) }}
+    <table class="table table-bordered table-striped">
+        <tr><th>Nombre</th><th>Acciones</th></tr>
+        {% for file in files %}
+        <tr><td>{{ file.name }}</td><td><a class="btn btn-primary" href="{{ path('push_file', { 'id': file.id}) }}">procesar</a> <a class="btn btn-info" href="{{ asset(file.webPath) }}">descargar</a></td></tr>
+        {% endfor %}
+    </table>
 {% endblock %}
