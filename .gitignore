@@ -4,6 +4,8 @@
 /web/assets/js/*
 /web/assets/fonts/*
 /web/assets/types/*.js
+/web/uploads/files/*
+!/web/uploads/files/.gitkeep
 /app/bootstrap.php.cache
 /app/phpunit.xml
 /app/cache/*
