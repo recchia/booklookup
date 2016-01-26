@@ -14,6 +14,10 @@ services:
     api.adapter.factory:
         class: AppBundle\Factory\AdapterFactory
 
-    bookslookup.queue:
+    bookslookup.producer:
         class: AppBundle\Service\ProducerService
         arguments: ["@old_sound_rabbit_mq.push_file_producer"]
+
+    bookslookup.consumer:
+        class: AppBundle\Service\ConsumerService
+        arguments: [%kernel.root_dir%]

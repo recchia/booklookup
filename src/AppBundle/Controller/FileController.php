@@ -83,7 +83,7 @@ class FileController extends Controller
             'path' => $file->getWebPath()
         ];
 
-        $this->get('bookslookup.queue')->publish(json_encode($message));
+        $this->get('bookslookup.producer')->publish(json_encode($message));
 
         return new JsonResponse(['file' => $message]);
     }
