@@ -29,5 +29,5 @@ class ConsumerService implements ConsumerInterface
     {
         $payload = json_decode(unserialize($msg->body));
 
-        echo sprintf("Id: %s Name: %s Path: %s Dir: %s" . PHP_EOL, $payload->id, $payload->name, $payload->path, $this->rootDir);
+        echo sprintf("Id: %s Name: %s Path: %s Dir: %s" . PHP_EOL, $payload->id, $payload->name, $payload->path, $this->webDir);
     }}
