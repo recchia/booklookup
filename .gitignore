@@ -6,6 +6,8 @@
 /web/assets/types/*.js
 /web/uploads/files/*
 !/web/uploads/files/.gitkeep
+/web/js/*
+!/web/js/.gitkeep
 /app/bootstrap.php.cache
 /app/phpunit.xml
 /app/cache/*
