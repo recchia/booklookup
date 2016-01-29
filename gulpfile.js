@@ -10,6 +10,7 @@ gulp.task('default', ['css', 'js', 'fonts']);
 gulp.task('css', function () {
     gulp.src([
         'bower_components/bootstrap/dist/css/bootstrap.min.css',
+        'bower_components/humane-js/themes/jackedup.css',
         'app/Resources/assets/css/custom.css'
     ])
         .pipe(concat('app.css'))
@@ -18,15 +19,17 @@ gulp.task('css', function () {
 
 gulp.task('js', function () {
     gulp.src([
+          'app/Resources/assets/js/custom.js',
         'bower_components/jquery/dist/jquery.js',
         'bower_components/bootstrap/dist/js/bootstrap.js',
-        'app/Resources/assets/css/custom.js',
+        'bower_components/humane-js/humane.js',
         'web/bundles/fosjsrouting/js/router.js',
         'web/js/fos_js_routes.js'
+
     ])
         .pipe(concat('app.js'))
         .pipe(uglify())
-        .pipe(gulp.dest('web/assets/js'))
+        .pipe(gulp.dest('web/assets/js'));
 });
 
 gulp.task('fonts', function () {
