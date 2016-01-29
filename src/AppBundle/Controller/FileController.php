@@ -71,7 +71,7 @@ class FileController extends Controller
     /**
      * @param File $file
      *
-     * @Route("/push/{id}", name="push_file")
+     * @Route("/push/{id}", name="push_file", options={"expose"=true})
      *
      * @return JsonResponse
      */
@@ -85,7 +85,7 @@ class FileController extends Controller
 
         $this->get('bookslookup.producer')->publish(json_encode($message));
 
-        return new JsonResponse(['file' => $message]);
+        return new JsonResponse(['status' => 'success', 'message' => 'File ' . $file->getName() . ' was sending to processing queue.']);
     }
 
 }
