@@ -71,7 +71,7 @@ class FileController extends Controller
     /**
      * @param File $file
      *
-     * @Route("/push/{id}", name="push_file", options={"expose"=true})
+     * @Route("/push/{id}", name="push_file", options={"expose"=true}, methods={"GET"})
      *
      * @return JsonResponse
      */
