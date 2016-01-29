@@ -20,7 +20,9 @@ gulp.task('js', function () {
     gulp.src([
         'bower_components/jquery/dist/jquery.js',
         'bower_components/bootstrap/dist/js/bootstrap.js',
-        'app/Resources/assets/css/custom.js'
+        'app/Resources/assets/css/custom.js',
+        'web/bundles/fosjsrouting/js/router.js',
+        'web/js/fos_js_routes.js'
     ])
         .pipe(concat('app.js'))
         .pipe(uglify())
