@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new JavierEguiluz\Bundle\EasyAdminBundle\EasyAdminBundle(),
             new Liuggio\ExcelBundle\LiuggioExcelBundle(),
             new OldSound\RabbitMqBundle\OldSoundRabbitMqBundle(),
+            new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
