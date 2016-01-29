@@ -18,8 +18,13 @@ parameters:
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
 
-    #rabbit connection
+    # rabbit connection
     rabbit_host: 127.0.0.1
     rabbit_port: 5672
     rabbit_user: guest
     rabbit_password: guest
+
+    # console request context
+    router.request_context.host: localhost
+    router.request_context.scheme: http
+    router.request_context.base_url: /
