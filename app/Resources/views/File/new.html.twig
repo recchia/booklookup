@@ -10,6 +10,10 @@
             {{ form_widget(form.name, { 'attr': { 'class': 'form-control' } }) }}
         </div>
         <div class="form-group">
+            <label>{{ form_label(form.api_vendor, null, { 'label_attr': { 'class': 'control-label' } }) }}</label>
+            {{ form_widget(form.api_vendor, { 'attr': { 'class': 'form-control' } }) }}
+        </div>
+        <div class="form-group">
             <label>{{ form_label(form.file) }}</label>
             {{ form_widget(form.file) }}
         </div>

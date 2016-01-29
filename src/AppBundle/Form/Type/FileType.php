@@ -17,6 +17,7 @@ class FileType extends AbstractType
         $builder
             ->add('name')
             ->add('file')
+            ->add('api_vendor')
             ->add('upload', 'submit')
         ;
     }

@@ -49,6 +49,13 @@ class File
     /**
      * @var object
      *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ApiVendor");
+     */
+    private $api_vendor;
+
+    /**
+     * @var object
+     *
      * @Assert\File(maxSize="6000000", mimeTypes={"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"})
      */
     private $file;
@@ -129,11 +136,31 @@ class File
     /**
      * Get User
      *
-     * @return object
+     * @return User
      */
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set Api Vendor
+     *
+     * @param ApiVendor $apiVendor
+     */
+    public function setApiVendor(ApiVendor $apiVendor)
+    {
+        $this->api_vendor = $apiVendor;
+    }
+
+    /**
+     * Get Api Vendor
+     *
+     * @return ApiVendor
+     */
+    public function getApiVendor()
+    {
+        return $this->api_vendor;
     }
 
     /**

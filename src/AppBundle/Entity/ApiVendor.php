@@ -128,4 +128,11 @@ class ApiVendor
         return $this->code;
     }
 
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->name;
+    }
 }
