@@ -24,6 +24,7 @@
   ],
   "dependencies": {
     "bootstrap": "~3.3.5",
-    "humane-js": "humane#~3.2.2"
+    "humane-js": "humane#~3.2.2",
+    "socket.io-client": "~1.4.5"
   }
 }

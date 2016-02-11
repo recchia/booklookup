@@ -19,13 +19,13 @@ gulp.task('css', function () {
 
 gulp.task('js', function () {
     gulp.src([
-          'app/Resources/assets/js/custom.js',
+        'bower_components/socket.io-client/socket.io.js',
+        'app/Resources/assets/js/custom.js',
         'bower_components/jquery/dist/jquery.js',
         'bower_components/bootstrap/dist/js/bootstrap.js',
         'bower_components/humane-js/humane.js',
         'web/bundles/fosjsrouting/js/router.js',
         'web/js/fos_js_routes.js'
-
     ])
         .pipe(concat('app.js'))
         .pipe(uglify())

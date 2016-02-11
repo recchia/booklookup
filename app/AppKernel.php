@@ -22,6 +22,7 @@ class AppKernel extends Kernel
             new Liuggio\ExcelBundle\LiuggioExcelBundle(),
             new OldSound\RabbitMqBundle\OldSoundRabbitMqBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
+            new Nc\Bundle\ElephantIOBundle\NcElephantIOBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

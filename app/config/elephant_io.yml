@@ -1,0 +1,5 @@
+nc_elephant_io:
+    clients:
+        default:
+            connection: http://books.linio:8090
+            version: 1.x

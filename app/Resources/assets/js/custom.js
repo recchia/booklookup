@@ -11,3 +11,11 @@ function pushFile(id) {
     }
   });
 }
+
+var socket = io('http://books.linio:8090');
+socket.on('notify', function (data) {
+  console.log(data);
+  var notify = humane.create({ baseCls: 'humane-jackedup', addnCls: 'humane-jackedup-success', timeout: 6000});
+  notify.log(data.hello);
+  socket.emit('server_event', { my: 'data' });
+});
