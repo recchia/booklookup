@@ -20,4 +20,4 @@ services:
 
     bookslookup.consumer:
         class: AppBundle\Service\ConsumerService
-        arguments: [%kernel.root_dir%]
+        arguments: [%kernel.root_dir%, "@service_container"]
